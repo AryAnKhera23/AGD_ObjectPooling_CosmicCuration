@@ -38,6 +38,7 @@ namespace CosmicCuration.Bullets
             return CreateBulletController();
         }
 
+
         private BulletController CreateBulletController()
         {
             PooledBullet bullet = new PooledBullet();
@@ -46,6 +47,16 @@ namespace CosmicCuration.Bullets
             bulletsPool.Add(bullet);
             return bullet.bulletController;
         }
+
+        public void ReturnBulletToPool(BulletController bulletController)
+        {
+            PooledBullet bullet = bulletsPool.Find(item => item.Equals(bulletController));
+            if (bullet != null)
+            {
+                bullet.isUsed = false;
+            }
+        }
+
     }
 }
 
