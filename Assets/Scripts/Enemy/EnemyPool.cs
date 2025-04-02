@@ -37,7 +37,7 @@ namespace CosmicCuration.Enemy
             return newEnemy.Enemy;
         }
 
-        private EnemyController CreateEnemy() => new EnemyController(enemyPrefab, enemyData);
+        private EnemyController CreateEnemy() => new (enemyPrefab, enemyData);
 
         public void ReturnEnemy(EnemyController enemy)
         {
