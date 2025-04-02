@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace CosmicCuration.Utilities
 {
     public class GenericObjectPool <T> where T : class
     {
-        protected List<PooledObject<T>> genericPool = new List<PooledObject<T>>();
+        protected List<PooledObject> genericPool = new();
 
-        public class PooledObject<T>
+        public class PooledObject
         {
             public T objectToPool;
             public bool isUsed;
@@ -19,7 +20,7 @@ namespace CosmicCuration.Utilities
         {
             if (genericPool.Count > 0)
             {
-                PooledObject<T> item = genericPool.Find(item => !item.isUsed);
+                PooledObject item = genericPool.Find(item => !item.isUsed);
                 if (item != null)
                 {
                     item.isUsed = true;
@@ -31,9 +32,11 @@ namespace CosmicCuration.Utilities
 
         private T CreateNewPooledObject()
         {
-            PooledObject<T> newObject = new PooledObject<T>();
-            newObject.objectToPool = CreateObject();
-            newObject.isUsed = true;
+            PooledObject newObject = new PooledObject
+            {
+                objectToPool = CreateObject(),
+                isUsed = true
+            };
             genericPool.Add(newObject);
             return newObject.objectToPool;
         }
@@ -45,7 +48,7 @@ namespace CosmicCuration.Utilities
 
         protected void ReturnObjectToPool(T objectToReturn)
         {
-            PooledObject<T> objectToReturnToPool = genericPool.Find(i => i.objectToPool.Equals(objectToReturn));
+            PooledObject objectToReturnToPool = genericPool.Find(i => i.objectToPool.Equals(objectToReturn));
             objectToReturnToPool.isUsed = false;
         }
     }
