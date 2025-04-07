@@ -13,12 +13,14 @@ namespace CosmicCuration.VFX
         {
             transform.position = positionToSet;
             vfx = GetComponent<ParticleSystem>();
+            gameObject.SetActive(true);
         }
 
         private void Update()
         {
-            if (vfx != null && vfx.isStopped)
-                    Destroy(gameObject);
+            if (vfx is not null && vfx.isStopped)
+                    gameObject.SetActive(false);
+                    GameService.Instance.GetVFXService().ReturnVFXToPool(controller);
         }
     }
 }
